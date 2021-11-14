@@ -1,0 +1,6 @@
+teleport-bow-name: '&aTeleport Bow'
+bow-unbreakable: true
+teleport-bow-description:
+  - 'Shoot the bow to teleport'
+# - 'This is another line of description'
+teleport-message: '&6Woosh!!!'
