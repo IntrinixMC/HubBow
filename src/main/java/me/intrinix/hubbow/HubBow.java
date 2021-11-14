@@ -10,14 +10,17 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public final class HubBow extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
+
         new HubBowCommand(this);
         new ProjectileHit(this);
-
     }
 
 
@@ -27,9 +30,21 @@ public final class HubBow extends JavaPlugin {
         ItemMeta hubMeta = hubBow.getItemMeta();
 
 
-        String displayName = ChatColor.translateAlternateColorCodes('&', "&aTeleport Bow");
+        String displayName = getConfig().getString("teleport-bow-name");
+
+        if(displayName == null){
+            displayName = ChatColor.translateAlternateColorCodes('&', "&aTeleportBow");
+        }
+
+        displayName = ChatColor.translateAlternateColorCodes('&', displayName);
         ArrayList<String> lore = new ArrayList<>();
-        boolean unbreakable = true;
+        List<String> lores = getConfig().getStringList("teleport-bow-description");
+        for(int i = 0; i > lores.size(); i++ ){
+           lore.add(lores.get(i));
+        }
+
+
+        boolean unbreakable = getConfig().getBoolean("bow-unbreakable");
 
         hubMeta.setDisplayName(displayName);
         hubMeta.setUnbreakable(unbreakable);
