@@ -1,15 +1,15 @@
 package me.intrinix.hubbow.events;
 
 import me.intrinix.hubbow.HubBow;
-import org.bukkit.Location;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class ProjectileHit implements Listener {
 
@@ -25,16 +25,21 @@ public class ProjectileHit implements Listener {
     public void onProjectileHit(ProjectileHitEvent event){
 
 
-        if(event.getEntity() instanceof Arrow){
+        ItemStack bow = new ItemStack(Material.BOW);
+        String teleportMessage = plugin.getConfig().getString("teleport-message");
+        if(teleportMessage == null){
+            teleportMessage = "&6Woosh!!!";
+        }
 
-            ItemStack bow = new ItemStack(Material.BOW);
-
-            Player player = (Player) event.getEntity().getShooter();
-            Location location = event.getEntity().getLocation();
-
-            if(plugin.teleportBow().isSimilar(bow)){
-                player.teleport(location);
-                player.sendMessage("Woosh");
+        if(event.getEntity().getShooter() instanceof Player){
+            if(event.getEntity() instanceof Arrow){
+                Player player = (Player) event.getEntity().getShooter();
+                if(player.getInventory().getItemInMainHand().isSimilar(plugin.teleportBow())){
+                    player.teleport(event.getEntity().getLocation());
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', teleportMessage));
+                    player.spawnParticle(Particle.PORTAL, player.getLocation(), 10);
+                    event.getEntity().remove();
+                }
             }
         }
 
