@@ -1,0 +1,19 @@
+name: HubBow
+version: '${version}'
+main: me.intrinix.hubbow.HubBow
+api-version: 1.17
+authors: [ Intrinix ]
+description: A simple teleport bow plugin for your server hub
+commands:
+  hubbow:
+    description: Gives you a bow that allows you to teleport
+    aliases:
+      - tpbow
+      - teleportbow
+    usage: /<command>
+    permission: hubbow.givebow
+    permission-message: You have no permission to execute this command
+permissions:
+  hubbow.givebow:
+    default: true
+    description: Gives you a bow that allows you to teleport
